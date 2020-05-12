@@ -1,0 +1,11 @@
+local:
+  server:
+    port : 8080
+
+authentication:
+  provider:
+    cognito:
+      region: us-east-1
+      poolId: POOL_ID
+      clientId: CLIENT_ID
+      clientSecret: SECRET_ID

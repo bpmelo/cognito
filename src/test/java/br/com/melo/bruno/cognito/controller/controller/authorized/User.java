@@ -1,0 +1,51 @@
+package br.com.melo.bruno.cognito.controller.controller.authorized;
+
+import br.com.melo.bruno.cognito.controller.BaseTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+public class User extends BaseTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    final String _API = "/authorized/user";
+
+    @Test
+    public void testGetAccountUnauthorized() {
+        ResponseEntity<String> _response =
+                restTemplate
+                        .exchange(
+                                getServerUri(_API),
+                                HttpMethod.GET,
+                                null,
+                                String.class
+                        );
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), _response.getStatusCode().value());
+    }
+
+    @Test
+    public void testGetAccountAuthorized() {
+        ResponseEntity<String> _response =
+                restTemplate.withBasicAuth(
+                        "teste1",
+                        "teste1234"
+                )
+                .exchange(
+                        getServerUri(_API),
+                        HttpMethod.GET,
+                        null,
+                        String.class
+                );
+        Assert.assertEquals(HttpStatus.OK.value(), _response.getStatusCode().value());
+    }
+
+}
